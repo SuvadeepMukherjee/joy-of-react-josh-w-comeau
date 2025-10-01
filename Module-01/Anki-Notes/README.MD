@@ -86,3 +86,105 @@ When we use a tool like React it works by interacting with the _____ via JavaScr
 **Solution**:
 
 When we use a tool like React it works by interacting with the DOM via JavaScript.It will create , update and delete DOM elements as required
+
+#### Q5:Create a React element that is a description of a hypothetical paragraph tag with an ID of hello containing the text 'Hello World!'
+
+**Solution**:
+
+The following JS code is the description of a hypothetical paragraph tag with an ID of hello containing the text "hello World!"
+
+```js
+const element = React.createElement(
+  'p',
+  { id: 'hello' },
+  'Hello World!'
+);
+```
+
+*React.createElement* is a function that accepts 3 or more arguments 
+
+- The type of the element to create
+- The propertied we want this element to have
+- The element's content .We can omit this if the element should be empty
+
+#### Q6:React elements are plain old Javascript objects , is the statement true or false?
+
+**Solution**:
+
+React elements are plain old JS objects 
+
+#### Q7:What will the console log show ? 
+
+```js
+const element = React.createElement(
+  'p',
+  { id: 'hello' },
+  'Hello World!'
+);
+console.log(element)
+```
+
+**Solution**:
+
+```js
+{
+  type: "p",
+  key: null,
+  ref: null,
+  props: {
+    id: 'hello',
+    children: 'Hello World!',
+  },
+  _owner: null,
+  _store: { validated: false }
+}
+```
+
+ Note ➡️ The final two properties _owner and _store are meant to be used internally by React and can be safely ignored by us 
+
+#### Q8:Fill in the blanks 
+
+The DOM is organized as. ___
+
+**Solution**:
+
+The DOM is organized as a family tree .
+
+Much like a family tree , individual elements can have parents and grandparents , siblings and children 
+
+React elements can also specify children . React elements form a hierarchy just like DOM elements do 
+
+```js
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+// 2. Create a React element
+const element = React.createElement(
+  'p',
+  { id: 'hello' },
+  'Hello World!'
+);
+
+// 3. Render the application
+const container = document.querySelector('#root');
+const root = createRoot(container);
+root.render(element);
+
+```
+
+#### Q9:This is the React code to print "hello world". Explain the following lines of code
+
+```js
+const container = document.querySelector('#root');
+const root = createRoot(container);
+root.render(element);
+```
+
+**Solution**:
+
+*document.querySelector* lets us capture a reference to a pre-existing DOM element . It works in this case because our index.html file includes the following element
+
+```html
+<div id="root"></div>
+```
+
+With react-dom's *createRoot* function we specify that this element should be the root of our application. And finally we render the application with *root.render(element)*. render function converts React elements into DOM nodes

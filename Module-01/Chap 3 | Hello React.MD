@@ -64,3 +64,61 @@ What is the DOM ?
   - When we right-click and "View Source" we view the HTML , a static document that describes what will be constructed
   - When we right-click and inspect element we open the Elements pane and we are interacting with the DOM.We can change attributes and watch the UI update in response
 - When we use a tool like React it works by interacting with the DOM via JavaScript.It will create , update and delete DOM elements as required
+
+**Create a React element**
+
+```js
+const element = React.createElement(
+  'p',
+  { id: 'hello' },
+  'Hello World!'
+);
+```
+
+`React.createElement` is a function that accepts 3 or more arguments:
+
+1. The type of the element to create.
+2. The properties we want this element to have.
+3. The element's contents. We can omit this if the element should be empty.
+
+This function returns a “React element”. React elements are plain old JavaScript objects. If we inspect it with `console.log(element)`, we'll see something like this:
+
+```js
+{
+  type: "p",
+  key: null,
+  ref: null,
+  props: {
+    id: 'hello',
+    children: 'Hello World!',
+  },
+  _owner: null,
+  _store: { validated: false }
+}
+```
+
+This JavaScript object is a *description* of a hypothetical paragraph tag, with an ID of `hello`, containing the text `"Hello World!"`. This information will be used to construct the *actual* paragraph we can see in-browser.
+
+Note ➡️ The final two properties _owner and _store are meant to be used internally by React , and can be safely ignored by us
+
+
+
+Note ➡️
+
+The DOM is organized as a family tree. Much like a family tree individual elements can have parents and grandparents , siblings and children . React elements can also specify children .React elements form a hierarchy just like DOM elements do
+
+**Render the application**
+
+```js
+const container = document.querySelector('#root');
+const root = createRoot(container);
+root.render(element);
+```
+
+*document.querySelector* lets us capture a reference to a pre-existing DOM element . It works in this case because our index.html file includes the following element
+
+```html
+<div id="root"></div>
+```
+
+With react-dom's *createRoot* function we specify that this element should be the root of our application. And finally we render the application with *root.render(element)*. render function converts React elements into DOM nodes
