@@ -1,13 +1,37 @@
-# Module 1 
+# Module 1 | React Fundamentals
 
 - The Magic Of React ✅
 - About React 19 ✅
 - Hello React
+  - Build Your own React
 - Understanding JSX
+  - Expression Slots
+  - Differences from HTML
+  - Fix the converter
+  - The Whitespace Gotcha
+  - Exercises
+  - JSX vs Templates
 - Components
+  - Thinking in Components
+  - Basic Syntax
+  - Props
+  - The Children Prop
+  - Exercises
 - Application Structure 
 - Fragments
 - Iteration
+  - Mapping over data
+  - Keys
+  - Exercises
 - Conditional Rendering
+  - With an if statement
+  - With &&
+  - With Ternary
+  - Showing and Hiding
+  - Exercises
 - Range Utility
+  - Exercises
 - Styling in React
+  - CSS Modules
+  - Exercises
+
