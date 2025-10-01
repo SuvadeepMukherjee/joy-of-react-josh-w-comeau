@@ -1,4 +1,4 @@
-# About React 19
+# Chap 2 | About React 19
 
 3 Major Changes in React 19
 
