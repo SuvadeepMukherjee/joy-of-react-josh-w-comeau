@@ -1,6 +1,6 @@
-## Module 1 (React Fundamentals)
+## Chap 3 | Hello World
 
-Anki Tag ➡️ 01-react-fundamentals
+Anki Tag ➡️ 03-hello-world
 
 **Q1**:Create a "hello world" react application with React ? 
 
