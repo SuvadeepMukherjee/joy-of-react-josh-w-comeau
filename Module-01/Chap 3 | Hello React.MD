@@ -4,8 +4,6 @@
 
 #### Hello World React Application
 
-------
-
 The following pieces of code creates a **hello world** react application
 
  index.js ➡️
@@ -122,3 +120,13 @@ root.render(element);
 ```
 
 With react-dom's *createRoot* function we specify that this element should be the root of our application. And finally we render the application with *root.render(element)*. render function converts React elements into DOM nodes
+
+Note ➡️(VVIP)
+
+-  How exactly is our code running, when we don't have a `<script src="/index.js"></script>`?
+  - The `index.js` file, along with the dependencies (React, React DOM), are bundled into cryptically-named files like `2.61b71a6f1.chunk.js`, and a `<script>` tag is dynamically injected into the HTML.
+  - There's an *active process* that transforms the files we writ
+- Why can't we add our code ourselves, using `<script>` tags, the way we do when working with jQuery and other libraries?
+  -   As we'll learn, JSX needs to be compiled into JS
+  -  It enables quality-of-life improvements, like being able to use bleeding-edge JS features
+  -  It's necessary for good performance, since React apps often have hundreds or even thousands of JS files that need to be bundled together.
