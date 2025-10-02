@@ -183,3 +183,10 @@ const element = _jsx(
 `_jsx` is a fancy optimized version of `React.createElement`. It includes some shortcuts when we use certain React features like  Fragments or Portals. Otherwise, it does the exact same thing as `React.createElement`: it creates a React element.
 
 And so, these days, we *don't* have to import React. The JSX compiler will solve this problem for us.
+
+**Expression Slots**:
+
+- In JSX, the content we put between open/close tags is treated as a static  string. If we try and reference a variable, it'll print the variable  name itself, rather than the value it references.
+- We can create *expression slots* with curly brackets (`{}`). Anything placed in-between curly brackets will be treated as pure JavaScript, instead of a string.
+- There aren't a lot of rules when it comes to JSX. The compilation process  doesn't check if it's even valid! It's the messenger; it forwards the  content along to the pure JS output.
+- Because JSX turns into `React.createElement()` function calls, we'll get a JavaScript syntax error if we try and place a statement in that slot. It has to be an *expression*.

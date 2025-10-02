@@ -228,5 +228,43 @@ const element = _jsx(
 );
 ```
 
-
 `_jsx` is a fancy optimized version of `React.createElement`. It includes some shortcuts when we use certain React features like  Fragments or Portals. Otherwise, it does the exact same thing as `React.createElement`: it creates a React element.
+
+------
+
+**Q7**: Why will we get a Javascript Syntax error if we try and place a statement in an expression slot ? 
+
+**Solution**:
+
+- Because JSX turns into *React.createElement()* function calls , we will get a JS syntax error if we try and place a statement in that slot .It has to be an expression
+
+------
+
+**Q8**:What is a JSX expression slot ? 
+
+**Solution**:
+
+- In JSX, the content we put between open/close tags is treated as a  static string. If we try and reference a variable, it'll print the  variable name itself, rather than the value it references.
+- We can create *expression slots* with curly brackets (`{}`). Anything placed in-between curly brackets will be treated as pure JavaScript, instead of a string.
+- Because JSX turns into `React.createElement()` function calls, we'll get a JavaScript syntax error if we try and place a statement in that slot. It has to be an *expression*.
+
+------
+
+**Q9**:How to add comments in JSX ? 
+
+**Solution**:
+
+To add a comment in JSX, we use an expression slot:
+
+```jsx
+const element = (
+  <div>
+    {/* Some comment! */}
+  </div>
+);
+```
+
+We specifically need to use the multi-line comment syntax (`/* */`) instead of the single-line syntax (`//`). This is because the single-line syntax comments *everything* out, including the closing `}` for the expression slot!
+
+![Code snippet with a double-slash comment, not working](https://courses.joshwcomeau.com/react-mats/jsx-broken-comment.png)
+
