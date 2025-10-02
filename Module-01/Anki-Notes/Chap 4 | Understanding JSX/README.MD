@@ -428,29 +428,31 @@ Difference between HTML and JSX
   - Note ➡️ To be a bit more specific : for and class work fine when we use them on native HTML elements but we run into problems if we try and use them on custom components
 
 - In HTML even if we dont close a tag .The browser is smart enough to figure out that the tag must be closed. In JSX we need to close every tag we open . In HTML the img tag does'nt need to be closed .In JSX we have to explicitly close this tag
-
 - Case-sensitive attributes
-
   - In JSX attributes need to be camelCase
     - autoplay(HTML)  ➡️ autoPlay(JSX)
     - onclick(HTML) ➡️ onClick(JSX)
     - tabindex(HTML) ➡️ tabIndex(JSX)
     - stroke-dash-array ➡️ strokeDashArray (JSX)
   - Note ➡️ There are two exceptions to this rule : data attributes and ARIA attributes
-
 - inline styles 
-
   - in HTML the style attribute allows us to apply some styles inline to a specified element . In JSX style instead takes an object
-
   - All CSS properties are written in camelCase. Every dash is replaced by capitalizing the subsequent word 
-
     - background-position becomes backgroundPosition
-
   - React will automatically apply the px suffix for certain CSS properties (Its a common convention in React to use unitless values where possible but we can absolutely use full units if we prefer)
 
-  - <div
-      style={{
-        width: 200, // Equivalent to `width: 200px`
-        paddingTop: 8, // Equivalent to `padding-top: 8px`
-      }}
-    >
+------
+
+**Q14**:
+
+How to add whitespace in JSX ? 
+
+**Solution**:
+
+- To add whitespace in JSX we use the following pieces of code `{" "}`
+
+Note ➡️ 
+
+- Prettier is a tool that will automatically format our code for us.  It's opinionated, and follows conventions used by the majority of  JavaScript developers.
+- Prettier knows about this whitespace gotcha, and will automatically add the `{' '}` whitespace character for us when it's necessary.
+

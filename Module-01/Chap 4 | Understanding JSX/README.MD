@@ -361,3 +361,29 @@ And so, to keep things as simple and future-proof as possible, it is recommended
       }}
     >
     ```
+
+**The whitespace gotcha**:
+
+- In JSX to add a whitespace we use this hack `{" "}`
+
+- On the web, whitespace serves two different purposes:
+
+  - It creates grammatical space characters between words in sentences
+
+  - It serves as indentation, to improve code readability for developers
+
+- Any tool that processes HTML or JSX will need to figure out how to  interpret every single whitespace character. Should it be a space, or is it indentation?
+
+- In HTML, every whitespace character (along with newline characters!) will  produce a single visible space. In some cases, this works to our  advantage, but in other circumstances, it gets in the way.
+
+- For example, suppose we have 3 images that are meant to be side-by-side  (see code playground below). By default, HTML will render them with a  single whitespace character between them.
+
+- It also depends on the layout algorithm. In Flexbox, the browser will  ignore all whitespace and indentation, just like the JSX compiler.
+
+- The JSX trick of adding `{' '}`, therefore, may not be as hacky as it feels. It's a way of us to signify to the compiler that a whitespace character is meant to be a  grammatical space, and isn't indentation.
+
+- Prettier is a tool that will automatically format our code for us.  It's opinionated, and follows conventions used by the majority of  JavaScript developers.
+
+- Prettier knows about this whitespace gotcha, and will automatically add the `{' '}` whitespace character for us when it's necessary.
+
+   
