@@ -287,3 +287,77 @@ This is the distinction between *transpile-time* (the code processing that happe
 <input type="range" min={1} max={20} />
 ```
 
+------
+
+In HTML its possible to set attributes to true by specifying only the key 
+
+```html
+<input required > 
+```
+
+This same pattern has been implemented in JSX ; these two elements are equivalent 
+
+```html
+<input required />
+<input required ={true}/>
+```
+
+However its not recommended doing this and preferred to spell it out and write `required={true}`
+
+Why ? 
+
+**Reason**:
+
+```js
+const name = 'Spot';
+const dog = { name };
+
+
+console.log(dog);
+→ { name: 'Spot' }
+```
+
+When it comes to JavaScript objects, `{ name }` is equivalent to `{ name: name }`, and not `{ name: true }`.
+
+JSX is a bit of a hybrid between HTML and JS, and so it can be ambiguous  for new developers. If we are  looking at JSX through an HTML lens, we would  expect the value to be `true`, but if you look at it through a JavaScript lens, you'd expect the value to be equal to the key.
+
+In fact, there was even some talk about deprecating the “attribute-only”  syntax in JSX, to remove this ambiguity. In the end, the team decided to keep it for now, but it wouldn't be a surprise  if this was removed in the future.
+
+And so, to keep things as simple and future-proof as possible, it is recommended to write the full thing out, `required={true}`.
+
+**Differences from HTML**:
+
+- We cant use JS reserved words in JSX(HTML attributes sometimes overlap with JS reserved words)
+
+  - for (html) changes to htmlFor(JSX)
+  - class(html) changes to className(JSX)
+
+  - Note ➡️ To be a bit more specific : for and class work fine when we use them on native HTML elements but we run into problems if we try and use them on custom components
+
+- In HTML even if we dont close a tag .The browser is smart enough to figure out that the tag must be closed. In JSX we need to close every tag we open In HTML the img tag does'nt need to be closed .In JSX we have to explicitly close this tag 
+- Case-sensitive attributes
+  - In JSX attributes need to be camelCase
+    - autoplay(HTML)  ➡️ autoPlay(JSX)
+    - onclick(HTML) ➡️ onClick(JSX)
+    - tabindex(HTML) ➡️ tabIndex(JSX)
+    - stroke-dash-array ➡️ strokeDashArray (JSX)
+  - Note ➡️ There are two exceptions to this rule : data attributes and ARIA attributes
+
+- inline styles 
+
+  - in HTML the style attribute allows us to apply some styles inline to a specified element . In JSX style instead takes an object
+
+  - All CSS properties are written in camelCase. Every dash is replaced by capitalizing the subsequent word 
+
+    - background-position becomes backgroundPosition
+
+  - React will automatically apply the px suffix for certain CSS properties (Its a common convention in React to use unitless values where possible but we can absolutely use full units if we prefer)
+
+  - ```jsx
+    <div
+      style={{
+        width: 200, // Equivalent to `width: 200px`
+        paddingTop: 8, // Equivalent to `padding-top: 8px`
+      }}
+    >
+    ```
