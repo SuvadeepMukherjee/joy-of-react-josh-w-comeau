@@ -190,3 +190,100 @@ And so, these days, we *don't* have to import React. The JSX compiler will solve
 - We can create *expression slots* with curly brackets (`{}`). Anything placed in-between curly brackets will be treated as pure JavaScript, instead of a string.
 - There aren't a lot of rules when it comes to JSX. The compilation process  doesn't check if it's even valid! It's the messenger; it forwards the  content along to the pure JS output.
 - Because JSX turns into `React.createElement()` function calls, we'll get a JavaScript syntax error if we try and place a statement in that slot. It has to be an *expression*.
+
+**Comments in JSX**:
+
+To add a comment in JSX, we use an expression slot:
+
+```jsx
+const element = (
+
+  <div>
+    {/* Some comment! */}
+  </div>
+
+);
+```
+
+We specifically need to use the multi-line comment syntax (`/* */`) instead of the single-line syntax (`//`). This is because the single-line syntax comments *everything* out, including the closing `}` for the expression slot!
+
+![Code snippet with a double-slash comment, not working](https://courses.joshwcomeau.com/react-mats/jsx-broken-comment.png)
+
+**Attribute Expression Slots**:
+
+To give dynamic attribute values we use expression slots
+
+```jsx
+const uniqueId = 'content-wrapper';
+
+
+const element = (
+  <main id={uniqueId}>
+    Hello World
+  </main>
+);
+```
+
+ The squiggly brackets (`{}`) allow us to create an *expression slot*. This time, we're creating a slot for the value of the `id` attribute.
+
+Here's how it compiles : 
+
+```js
+const element = React.createElement(
+  'main',
+  {
+    id: uniqueId,
+  },
+  'Hello World'
+);
+```
+
+We can use attribute expression slots whenever we need the values to be dynamic. We can put *any valid JavaScript* expression in here, not just variables:
+
+```jsx
+const userEmail = 'sumeet@thegreat.com';
+
+
+const element = (
+  <main id={userEmail.replace('@', '-')}>
+    Hello World
+  </main>
+);
+
+
+// Will get compiled as:
+const compiledElement = React.createElement(
+  'main',
+  {
+    id: userEmail.replace('@', '-'),
+  },
+  'Hello World'
+);
+```
+
+Note that when we transpile the code, it doesn't actually get *evaluated.* We've written some logic which will turn that `userEmail` string into `"sumeet-thegreat.com"`, replacing the `@` character with a `-`, but that only happens when we *run* the code.
+
+When JSX gets transpiled to JS, we copy over everything between the `{` and `}`. We don't call any functions or run any of the logic. That happens later, when the processed JavaScript runs in the browser.
+
+This is the distinction between *transpile-time* (the code processing that happens before the code runs in the browser) and *run-time* (the code execution that happens in the browser).
+
+**Type Coercion**:(We are supplying attributes in expression slots.What will the JSX expression be converted  into ar runtime )? 
+
+- React will automatically convert types as needed when supplying attributes in expression slots
+- In HTML , values must be strings and so the boolean true is converted to the string "true"
+- Similarly the 1 and 20 is converted to "1" and "20"
+
+```html
+// This works:
+<input required="true" />
+
+
+// And so does this!
+<input required={true} />
+
+// ✅ Valid
+<input type="range" min="1" max="20" />
+// ✅ Valid
+<input type="range" min={1} max={20} />
+```
+

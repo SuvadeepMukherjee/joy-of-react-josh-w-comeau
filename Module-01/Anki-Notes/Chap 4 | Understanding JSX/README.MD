@@ -268,3 +268,80 @@ We specifically need to use the multi-line comment syntax (`/* */`) instead of t
 
 ![Code snippet with a double-slash comment, not working](https://courses.joshwcomeau.com/react-mats/jsx-broken-comment.png)
 
+------
+
+```js
+const userEmail = 'sumeet@thegreat.com';
+
+
+const element = (
+
+  <main id={userEmail.replace('@', '-')}>
+    Hello World
+  </main>
+
+);
+```
+
+**Q10**:Does the code actually get evaluated during transpiling ? 
+
+**Solution**:
+
+when we transpile the code, it doesn't actually get *evaluated.* We've written some logic which will turn that `userEmail` string into `"sumeet-thegreat.com"`, replacing the `@` character with a `-`, but that only happens when we *run* the code.
+
+When JSX gets transpiled to JS, we copy over everything between the `{` and `}`. We don't call any functions or run any of the logic. That happens later, when the processed JavaScript runs in the browser.
+
+This is the distinction between *transpile-time* (the code processing that happens before the code runs in the browser) and *run-time* (the code execution that happens in the browser).
+
+```js
+const userEmail = 'sumeet@thegreat.com';
+
+
+const element = (
+
+  <main id={userEmail.replace('@', '-')}>
+    Hello World
+  </main>
+
+);
+
+
+// Will get compiled as:
+const compiledElement = React.createElement(
+  'main',
+  {
+    id: userEmail.replace('@', '-'),
+  },
+  'Hello World'
+);
+```
+
+------
+
+**Q11**:We are supplying attributes in expression slots .What will the JSX expression be converted into (at runtime)? 
+
+```jsx
+<input required ={true}/>
+<input type ="range" min={1} max={20}/>
+```
+
+**Solution**:
+
+- React will automatically convert types as needed when supplying attributes in expression slots
+- In HTML , values must be strings and so the boolean true is converted to the string "true"
+- Similarly the 1 and 20 is converted to "1" and "20"
+
+```jsx
+// This works:
+<input required="true" />
+
+
+// And so does this!
+<input required={true} />
+
+// ✅ Valid
+<input type="range" min="1" max="20" />
+// ✅ Valid
+<input type="range" min={1} max={20} />
+```
+
