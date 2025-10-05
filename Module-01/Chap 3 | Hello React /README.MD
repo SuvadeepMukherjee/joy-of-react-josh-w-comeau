@@ -38,7 +38,9 @@ Index.html ➡️
 </html>
 ```
 
-**Imporing dependencies**
+------
+
+## Imporing dependencies
 
 ```js
 import React from 'react';
@@ -53,9 +55,9 @@ import { createRoot } from 'react-dom/client';
 - Every platform has its own "primitives" the set of built-in elements we use to create our User Interface
 - All of these platforms will use the same core React framework which comes from the react package .But when it comes to actually turning all of the business logic into a user interface we need the correct bindings for our platform 
 
-Note ➡️
+------
 
-What is the DOM ? 
+## What is the DOM ? 
 
 - The DOM is the living , breathing structure that makes up a live website the browser turns the static HTML into the DOM
 - Here is another way to look at it 
@@ -63,7 +65,9 @@ What is the DOM ?
   - When we right-click and inspect element we open the Elements pane and we are interacting with the DOM.We can change attributes and watch the UI update in response
 - When we use a tool like React it works by interacting with the DOM via JavaScript.It will create , update and delete DOM elements as required
 
-**Create a React element**
+------
+
+## Create a React element
 
 ```js
 const element = React.createElement(
@@ -99,9 +103,9 @@ This JavaScript object is a *description* of a hypothetical paragraph tag, with 
 
 Note ➡️ The final two properties _owner and _store are meant to be used internally by React , and can be safely ignored by us
 
+------
 
-
-Note ➡️
+## DOM as a family tree
 
 The DOM is organized as a family tree. Much like a family tree individual elements can have parents and grandparents , siblings and children . React elements can also specify children .React elements form a hierarchy just like DOM elements do
 
