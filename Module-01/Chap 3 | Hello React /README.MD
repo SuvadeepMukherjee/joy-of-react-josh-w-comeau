@@ -2,7 +2,7 @@
 
 ------
 
-#### Hello World React Application
+## Hello World React Application
 
 The following pieces of code creates a **hello world** react application
 
