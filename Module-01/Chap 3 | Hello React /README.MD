@@ -125,7 +125,9 @@ root.render(element);
 
 With react-dom's *createRoot* function we specify that this element should be the root of our application. And finally we render the application with *root.render(element)*. render function converts React elements into DOM nodes
 
-Note ➡️(VVIP)
+------
+
+## How exactly is our code running , when we don't have a `<script src="/index.js"></script>` ? 
 
 -  How exactly is our code running, when we don't have a `<script src="/index.js"></script>`?
   - The `index.js` file, along with the dependencies (React, React DOM), are bundled into cryptically-named files like `2.61b71a6f1.chunk.js`, and a `<script>` tag is dynamically injected into the HTML.
