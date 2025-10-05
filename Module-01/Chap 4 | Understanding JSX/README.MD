@@ -1,10 +1,14 @@
 # Understanding JSX
 
-Very few developers create elements using *React.createElement* .It's much more common to use a specialized syntax called JSX
+## Creating a Hello World Application using JSX
 
-Hello World using JSX ➡️
+------
 
-index.html ➡️
+- Very few developers create elements using *React.createElement* .It's much more common to use a specialized syntax called JSX
+
+- Hello World using JSX ➡️
+
+- index.html ➡️
 
 ```html
 <html>
@@ -16,7 +20,7 @@ index.html ➡️
 </html>
 ```
 
-index.js ➡️
+- index.js ➡️
 
 ```js
 import React from 'react';
@@ -53,15 +57,13 @@ const element = (
 
 This is done purely for formatting purposes. It allows us to push the JSX onto the next line.
 
+## Why do we need JSX ? 
 
+------
 
-Note ➡️ VVIP 
+- React elements can form a tree structure (This happens when we set the children parameter of a React element to another React element )
 
-**Why do we need JSX ?** 
-
-React elements can form a tree structure (This happens when we set the children parameter of a React element to another React element )
-
-In practise we often wind up with pretty significant tree structure in our React code
+- In practise we often wind up with pretty significant tree structure in our React code
 
 ```js
 const element = React.createElement(
@@ -92,24 +94,33 @@ const element = React.createElement(
 );
 ```
 
-**Transpiling JSX into JS**
-JS Engines dont understand JSX they only understand JS so we need to transpile our code into plain js .This is most commonly done as part of a build step using a tool called Babel .The JSX we write gets converted into *React.createElement* .By the time our code is running in the user's browser all of the JSX has been zapped out and we are left with a JS file full of nested *React.createElement* calls
+## Transpiling JSX into JS
 
-Note ➡️ (VVIP)
+------
 
-**Transpiling vs Compiling**
+- JS Engines dont understand JSX they only understand JS so we need to transpile our code into plain js .This is most commonly done as part of a build step using a tool called Babel .The JSX we write gets converted into *React.createElement* .By the time our code is running in the user's browser all of the JSX has been zapped out and we are left with a JS file full of nested *React.createElement* calls
 
-compiling ➡️ Process of taking human-readable code and transforming it into machine-readable code . A compiler might take a high-level language like Python and convert it into machine code , low-level instructions that appear like gibberish to us 
+## Transpiling vs Compiling
 
-transpiling ➡️ Taking one high level language and transforming it into another high-level language . For example we might transpile JS into python
+------
 
-**File extensions and JSX**
+- compiling ➡️ Process of taking human-readable code and transforming it into machine-readable code . A compiler might take a high-level language like Python and convert it into machine code , low-level instructions that appear like gibberish to us 
 
-In the early days of React , any file that included JSX had to use the .jsx file extension .This was how we told the compiler that this file had some JSX in it and needs to be compiled to JS 
+- transpiling ➡️ Taking one high level language and transforming it into another high-level language . For example we might transpile JS into python
 
-To ease out the friction in the development process the rules were loosened .Now we can include JSX in a .js file and everything will work perfectly (One exception is if you use Vite , a bundler created by the Vue team . This tool still enforces the no-JSX-in-JS-Files rule)
+## File extensions and JSX
 
-**Can we skip the React import ? **
+------
+
+- In the early days of React , any file that included JSX had to use the .jsx file extension .This was how we told the compiler that this file had some JSX in it and needs to be compiled to JS 
+
+- To ease out the friction in the development process the rules were loosened .Now we can include JSX in a .js file and everything will work perfectly (One exception is if you use Vite , a bundler created by the Vue team . This tool still enforces the no-JSX-in-JS-Files rule)
+
+## Can we skip the React import ? 
+
+------
+
+
 
 ```jsx
 import React from 'react';
@@ -184,14 +195,20 @@ const element = _jsx(
 
 And so, these days, we *don't* have to import React. The JSX compiler will solve this problem for us.
 
-**Expression Slots**:
+## Expression Slots:
+
+------
+
+
 
 - In JSX, the content we put between open/close tags is treated as a static  string. If we try and reference a variable, it'll print the variable  name itself, rather than the value it references.
 - We can create *expression slots* with curly brackets (`{}`). Anything placed in-between curly brackets will be treated as pure JavaScript, instead of a string.
 - There aren't a lot of rules when it comes to JSX. The compilation process  doesn't check if it's even valid! It's the messenger; it forwards the  content along to the pure JS output.
 - Because JSX turns into `React.createElement()` function calls, we'll get a JavaScript syntax error if we try and place a statement in that slot. It has to be an *expression*.
 
-**Comments in JSX**:
+## Comments in JSX:
+
+------
 
 To add a comment in JSX, we use an expression slot:
 
@@ -209,7 +226,9 @@ We specifically need to use the multi-line comment syntax (`/* */`) instead of t
 
 ![Code snippet with a double-slash comment, not working](https://courses.joshwcomeau.com/react-mats/jsx-broken-comment.png)
 
-**Attribute Expression Slots**:
+## Attribute Expression Slots:
+
+------
 
 To give dynamic attribute values we use expression slots
 
@@ -267,7 +286,13 @@ When JSX gets transpiled to JS, we copy over everything between the `{` and `}`.
 
 This is the distinction between *transpile-time* (the code processing that happens before the code runs in the browser) and *run-time* (the code execution that happens in the browser).
 
-**Type Coercion**:(We are supplying attributes in expression slots.What will the JSX expression be converted  into ar runtime )? 
+## Type Coercion:
+
+(We are supplying attributes in expression slots.What will the JSX expression be converted  into during runtime )?
+
+------
+
+ 
 
 - React will automatically convert types as needed when supplying attributes in expression slots
 - In HTML , values must be strings and so the boolean true is converted to the string "true"
@@ -325,7 +350,11 @@ In fact, there was even some talk about deprecating the “attribute-only”  sy
 
 And so, to keep things as simple and future-proof as possible, it is recommended to write the full thing out, `required={true}`.
 
-**Differences from HTML**:
+## Differences from HTML:
+
+------
+
+
 
 - We cant use JS reserved words in JSX(HTML attributes sometimes overlap with JS reserved words)
 
@@ -362,7 +391,11 @@ And so, to keep things as simple and future-proof as possible, it is recommended
     >
     ```
 
-**The whitespace gotcha**:
+## The whitespace gotcha:
+
+------
+
+
 
 - In JSX to add a whitespace we use this hack `{" "}`
 
