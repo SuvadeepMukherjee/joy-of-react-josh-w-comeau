@@ -43,8 +43,6 @@ React components need to start with a capital letter .This is how the JSX compil
 
 The convention is to use PascalCase for all React component names
 
-
-
 Note ➡️ (VVIP)
 
 ```jsx
@@ -62,3 +60,60 @@ const greeting = React.createElement(FriendlyGreeting, null);
 A React element is a description of a thing we want to create. In some cases, we want to create a DOM node, like an `<h1>` or a `<p>`. In other cases, we want to create a *component instance*.
 
 The first argument that we pass to `React.createElement` is the “type” of the thing we want to create. For the first element, it's a string (`"h1"`). For the second element, it's a *function!* It's `FriendlyGreeting`, and not `"FriendlyGreeting"`.
+
+---
+
+## Props
+
+Props are like arguments to a function:they allow us to pass data to our components, so that the component can include customizations based on the data
+
+```jsx
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+function FriendlyGreeting({ name }) {
+  return (
+    <p
+      style={{
+        fontSize: '1.25rem',
+        textAlign: 'center',
+        color: 'sienna',
+      }}
+    >
+      Greetings, {name}!
+    </p>
+  );
+}
+
+// The video was filmed using React 17, but this code
+// has been updated for React 19:
+const root = createRoot(document.querySelector('#root'));
+
+root.render(
+  <div>
+    <FriendlyGreeting name="Josh" />
+    <FriendlyGreeting name="Anita" />
+    <FriendlyGreeting name="Rahul" />
+  </div>
+)
+```
+
+## Default values
+
+To pass default values to props we do the following 
+
+```jsx
+function FriendlyGreeting({ name = 'there' }) {
+
+  return (
+
+<p>
+
+  Hey {name}
+
+</p>
+
+  );
+
+}
+```
