@@ -140,11 +140,9 @@ function Friend({ name, isOnline }) {
 }
 ```
 
-In the code above , `prefix` will either be assigned to a React element, or it won't be defined at all .This works because React ignores undefined values.
-
 Note 💥
 
-Consider the following code: 
+Consider the following code:
 
 ```jsx
 function Greeting() {
@@ -171,3 +169,4 @@ In the code above, a variable named `someClass` is created, but it isn't given a
 When React sees that an attribute is being set to `undefined`, it omits that attribute entirely from the DOM node. Rather than give it an empty value like `className=""`, it acts as though we haven't even tried to set a value.
 
 This is true for some other falsy values as well, like `null` and `false`.
+
