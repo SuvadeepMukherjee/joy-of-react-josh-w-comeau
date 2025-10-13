@@ -117,3 +117,157 @@ function FriendlyGreeting({ name = 'there' }) {
 
 }
 ```
+
+## The Children Prop
+
+Let's suppose that we're building a custom *button* component. It should look and act just like a regular HTML button, but it should have a red background and white text.
+
+We could write it like this:
+
+```jsx
+function RedButton({ contents }) {
+
+  return (
+
+    <button
+
+      style={{
+
+        color: 'white',
+
+        backgroundColor: 'red',
+
+      }}
+
+    >
+
+      {contents}
+
+    </button>
+
+  );
+
+}
+```
+
+…And then we'd use it like this:
+
+```jsx
+root.render(
+
+<RedButton contents="Don't click me" />
+
+);
+```
+
+This is a little bit different compared to a typical HTML button where the content goes in-between the open and close tags:
+
+```jsx
+<button>
+  Don't click me
+</button>
+```
+
+As a nice bit of syntactic sugar , React lets us do the same thing with our custom components:
+
+```jsx
+root.render(
+
+<RedButton>
+
+    Don't click me
+
+</RedButton>
+
+);
+```
+
+When we do this, we can access the children through the `children` prop:
+
+```jsx
+function RedButton({ children }) {
+
+  return (
+
+<button
+
+  style={{
+
+    color: 'white',
+
+    backgroundColor: 'red',
+
+  }}
+
+>
+
+  {children}
+
+</button>
+
+  );
+
+}
+```
+
+This is a quality-of-life thing that React does for us. When we pass 
+something between the open and close tags, React will automatically 
+supply that value to us under `children`.
+
+![](../assets/children-prop.png)
+
+children is a special value , a "reserved word" when it comes to props .But it's not that special .If we wanted to , we could pass childrem in the traditional way .It's clunky , but the outcome is the same
+
+```jsx
+// This element:
+
+<div children="Hello world!" />
+
+// …is equivalent to this one:
+
+<div>
+
+  Hello world!
+
+</div> 
+```
+
+## What happens if we pass both "forms" of the children prop ?
+
+```jsx
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+const element = (
+  <div children="As an attribute">
+    Between the brackets
+  </div>
+);
+
+const root = createRoot(
+  document.querySelector('#root')
+);
+root.render(element);
+```
+
+React chooses to prioritize the `children` passed in-between the open/close tages
+
+This is what the copiled JS would look like: 
+
+```jsx
+const element = React.createElement(
+
+  'div',
+
+  {
+
+    children: 'As an attribute',
+
+  },
+
+  'Between the brackets',
+
+);
+```
+
+This strongly suggests that the React team made an intentional decision to manually overwrite the `children` value in the props object with the `children` argument supplied afterwards
