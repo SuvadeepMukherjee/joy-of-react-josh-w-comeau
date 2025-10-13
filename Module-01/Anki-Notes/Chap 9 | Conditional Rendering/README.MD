@@ -180,3 +180,9 @@ In the code above, a variable named `someClass` is created, but it isn't given a
 When React sees that an attribute is being set to `undefined`, it omits that attribute entirely from the DOM node. Rather than give it an empty value like `className=""`, it acts as though we haven't even tried to set a value.
 
 This is true for some other falsy values as well, like `null` and `false`.
+
+**Q2**:What is the downside of conditional rendering with an if statement ? 
+
+**Solution**:
+
+The downside with using an `if` statement is that we need to pull the logic up, away from the rest of the markup. While this is perfectly valid, it *can* make it harder to understand how a component is structured, especially  in larger and more-complex components. We'd have to hop all over the  place to understand what gets returned!
