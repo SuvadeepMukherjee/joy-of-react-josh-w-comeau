@@ -231,7 +231,19 @@ children is a special value , a "reserved word" when it comes to props .But it's
 **Q7**:What happens if we pass both forms of the children prop ? 
 
 ```jsx
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
+const element = (
+  <div children="As an attribute">
+    Between the brackets
+  </div>
+);
+
+const root = createRoot(
+  document.querySelector('#root')
+);
+root.render(element);
 ```
 
 **Solution**:
