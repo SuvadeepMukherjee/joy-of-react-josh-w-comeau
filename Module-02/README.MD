@@ -4,7 +4,7 @@
 
 | Topic                  | Notes | Anki | Practise | Exercise |
 | ---------------------- | ----- | ---- | -------- | -------- |
-| Introduction           |       |      |          |          |
+| Introduction           | ✅     | ✅    | ✅        | ✅        |
 | Event Handlers         |       |      |          |          |
 | The useState Hook      |       |      |          |          |
 | Forms                  |       |      |          |          |
@@ -15,5 +15,4 @@
 | Component Instances    |       |      |          |          |
 | State Management Tools |       |      |          |          |
 | Bonus:Input Cheatsheet |       |      |          |          |
-
 
