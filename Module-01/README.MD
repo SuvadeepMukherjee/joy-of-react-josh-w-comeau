@@ -31,7 +31,6 @@
   - Exercises
 - Range Utility
   - Exercises
-- Styling in React
+- Styling in React (Fully Completed)
   - CSS Modules
   - Exercises
-
