@@ -36,8 +36,6 @@
 
 ## CSS Modules
 
-
-
 Lets build a sidenote 
 
 ![](../assets/sidenote.png)
