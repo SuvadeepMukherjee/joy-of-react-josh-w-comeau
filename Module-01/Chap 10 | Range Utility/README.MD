@@ -65,3 +65,86 @@ const range = (start, end, step = 1) => {
   return output;
 };
 ```
+
+## Complete Solution demonstrating this function
+
+App.js => 
+
+```js
+import StarRating from './StarRating';
+
+function App() {
+  return (
+    <>
+      <section>
+        <h2>Winter's Orbit</h2>
+        <p>
+          Rating: 5 / 5
+        </p>
+        <StarRating rating={5} />
+      </section>
+      <section>
+        <h2>Dial D for Deadman</h2>
+        <p>
+          Rating: 4 / 5
+        </p>
+        <StarRating rating={4} />
+      </section>
+      <section>
+        <h2>Words And Things</h2>
+        <p>
+          Rating: 0 / 5
+        </p>
+        <StarRating rating={0} />
+      </section>
+      <section>
+        <h2>The Galaxy, And The Ground Within</h2>
+        <p>
+          Rating: 5 / 5
+        </p>
+        <StarRating rating={5} />
+      </section>
+    </>
+  );
+}
+
+export default App;
+```
+
+StarRating.js => 
+
+```jsx
+function StarRating({ rating }) {
+  return (
+    <div className="star-wrapper">
+      {range(rating).map((num) => (
+        <img
+          key={num}
+          alt=""
+          className="gold-star"
+          src="https://sandpack-bundler.vercel.app/img/gold-star.svg"
+        />
+      ))}
+    </div>
+  );
+}
+
+const range = (start, end, step = 1) => {
+  let output = [];
+
+  if (typeof end === 'undefined') {
+    end = start;
+    start = 0;
+  }
+
+  for (let i = start; i < end; i += step) {
+    output.push(i);
+  }
+
+  return output;
+};
+
+export default StarRating;
+```
+
+
