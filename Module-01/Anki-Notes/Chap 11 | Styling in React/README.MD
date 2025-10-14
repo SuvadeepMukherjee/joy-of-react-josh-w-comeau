@@ -61,7 +61,7 @@ The core idea with components is that each componen is a bundle of markup(in JSX
 
 ---
 
-**Q5**:When our CSS file ends in a `.module.css` and we import it like a JS module what things happen during the transpilation process. Specifically talk about what happens to the CSS during transpilation 
+**Q5**:When our CSS file ends in `.module.css` and we import it like a JS module, what happens to the CSS during the transpilation process? Explain the steps involved.
 
 App.js => 
 
