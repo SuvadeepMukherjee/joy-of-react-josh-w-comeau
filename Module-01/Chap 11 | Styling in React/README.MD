@@ -2,8 +2,6 @@
 
 ## Styling in React
 
----
-
 - React is *unopinionated* when it comes to styling. As a result, there are dozens of options out there when it comes to pairing CSS with React.
 
 - We could write CSS the traditional way . We could keep a bunch of CSS files , and include them with <link> tags in our index.html
@@ -15,8 +13,6 @@
 - When we structure our code this way , working with CSS becomes much simpler 
 
 ## Block Element Modifier and React
-
----
 
 - The traditional way of writing CSS involves writing lots of different 
   selectors to target the same element. This leads to an "arms race", 
@@ -40,7 +36,7 @@
 
 ## CSS Modules
 
----
+
 
 Lets build a sidenote 
 
@@ -150,5 +146,3 @@ Note =>
 Webpack treats the CSS module as a “default export”, and so we can name it whatever we like.
 
 `import classes from './Sidenote.module.css';`
-
-
