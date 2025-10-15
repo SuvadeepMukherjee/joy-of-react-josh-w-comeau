@@ -63,7 +63,7 @@ function App() {
 
 The problem is that we're mutating the `colors` array. 
 
-When we call `setColors`, we need to provide a *brand new* array. React needs to know that the array / object is new then only it will render . If we mutate the original array react will think we didnt change anything and will not render anything  
+When we call `setColors`, we need to provide a *brand new* array. React needs to know that the array / object is new then only it will render . If we mutate the original array/object react will think we didn't change anything and will not render anything  
 
 The solution to this problem is to update our `onchange` function so that we're always generating a new array.
 
