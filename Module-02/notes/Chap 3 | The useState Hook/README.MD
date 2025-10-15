@@ -437,5 +437,3 @@ long. So, it would be a performance liability. But it would also lead to
 <p>{undefined}</p>
 
 Because state updates are asynchronous, they can be *batched*. React schedules the update, to take place as soon as the current work is completed (in practice, this is usually within a millisecond or two, so it feels completely instantaneous).
-
-

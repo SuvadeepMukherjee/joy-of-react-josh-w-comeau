@@ -250,3 +250,289 @@ Because state updates are asynchronous, they can be *batched*.
  React schedules the update, to take place as soon as the current work 
 is completed (in practice, this is usually within a millisecond or two, 
 so it feels completely instantaneous).
+
+**Q9**:Bastions and Basilisks Bug 
+
+You're building an in-browser role-playing game, *Bastions and Basilisks*, but you've hit a snag! The wrong values are being shown to the user when their character levels up.
+
+Your mission is to fix the bug.
+
+**Acceptance Criteria:**
+
+- When the “Level up” button is clicked, the `alert` that pops up should show the *updated* values for strength/dexterity/intelligence.
+
+For example, when clicking the button for the first time, “strength” should be displayed as 7, not 6.
+
+```jsx
+import React from 'react';
+
+function Character() {
+  const [strength, setStrength] = React.useState(6);
+  const [dexterity, setDexterity] = React.useState(9);
+  const [intelligence, setIntelligence] = React.useState(15);
+
+  function triggerLevelUp() {
+   (strength)=> setStrength(strength + 1);
+   (dexterity)=> setDexterity(dexterity + 2);
+   (intelligence)=> setIntelligence(intelligence + 3);
+
+    window.alert(`
+      Congratulations! Your hero now has the following stats:
+      Str: ${strength}
+      Dex: ${dexterity}
+      Int: ${intelligence}
+    `);
+  }
+return (
+    <div className="wrapper">
+      <img
+        alt="8-bit wizard character"
+        src="https://sandpack-bundler.vercel.app/img/mage-sprite.gif"
+      />
+      <button onClick={()=>triggerLevelUp()}>
+        Level Up
+      </button>
+    </div>
+  );
+}
+
+export default Character;
+```
+
+**Solution**:
+
+```jsx
+import React from 'react';
+
+function Character() {
+  const [strength, setStrength] = React.useState(6);
+  const [dexterity, setDexterity] = React.useState(9);
+  const [intelligence, setIntelligence] = React.useState(15);
+
+  function triggerLevelUp() {
+    const nextStrength = strength + 1;
+    const nextDexterity = dexterity + 2;
+    const nextIntelligence = intelligence + 3;
+
+    setStrength(nextStrength);
+    setDexterity(nextDexterity);
+    setIntelligence(nextIntelligence);
+
+    window.alert(`
+      Congratulations! Your hero now has the following stats:
+      Str: ${nextStrength}
+      Dex: ${nextDexterity}
+      Int: ${nextIntelligence}
+    `);
+  }
+
+  return (
+    <div className="wrapper">
+      <img
+        alt="8-bit wizard character"
+        src="https://sandpack-bundler.vercel.app/img/mage-sprite.gif"
+      />
+      <button onClick={triggerLevelUp}>
+        Level Up
+      </button>
+    </div>
+  );
+}
+
+export default Character;
+```
+
+**Q10**:Counter 2.0
+
+The counter has been upgraded, and now supports several functions.
+
+The buttons have already been added to the page, but they don't do anything yet. **Your job is to wire up the buttons.**
+
+**Acceptance Criteria:**
+
+The- button should increase the count by 1.
+
+The- button should increase the count by 10.
+
+The- button should reset the count to 0.
+
+The- button should set the count to a random number between 1 and 100.
+
+The- button should decrease the count by 10.
+
+The button should decrease the count by 1.
+
+```jsx
+import React from 'react';
+import { ChevronUp, ChevronsUp, ChevronDown, ChevronsDown, RotateCcw, Hash } from 'react-feather'
+
+function Counter() {
+  const [count, setCount] = React.useState(0);
+
+  function increaseSlightly(count){
+    const nextCount = count+1;
+    setCount(nextCount)
+  }
+return (
+    <div className="wrapper">
+      <p>
+        <span>Current value:</span>
+        <span className="count">
+          {count}
+        </span>
+      </p>
+      <div className="button-row">
+        <button onClick={increaseSlightly}>
+          <ChevronUp />
+          <span className="visually-hidden">
+            Increase slightly
+          </span>
+        </button>
+        <button>
+<ChevronsUp />
+          <span className="visually-hidden">
+            Increase a lot
+          </span>
+        </button>
+        <button>
+          <RotateCcw />
+          <span className="visually-hidden">
+            Reset
+          </span>
+        </button>
+        <button>
+          <Hash />
+          <span className="visually-hidden">
+            Set to random value
+          </span>
+        </button>
+        <button>
+          <ChevronsDown />    
+<span className="visually-hidden">
+            Decrease a lot
+          </span>
+        </button>
+        <button>
+          <ChevronDown />
+          <span className="visually-hidden">
+            Decrease slightly
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
+**Solution**:
+
+```js
+import React from 'react';
+import {
+  ChevronUp,
+  ChevronsUp,
+  ChevronDown,
+  ChevronsDown,
+  RotateCcw,
+  Hash,
+} from 'react-feather';
+
+const clamp = (val, min = 0, max = 1) => {
+  if (min > max) {
+    [min, max] = [max, min];
+  }
+
+  return Math.max(min, Math.min(max, val));
+};
+
+function Counter({ initialVal = 0 }) {
+  const [
+    count,
+    setCount,
+  ] = React.useState(initialVal);
+
+  return (
+    <div className="wrapper">
+      <p>
+        <span>Current value:</span>
+        <span className="count">
+          {count}
+        </span>
+      </p>
+      <div className="button-row">
+        <button
+          onClick={() =>
+            setCount(count + 1)
+          }
+        >
+          <ChevronUp />
+          <span className="visually-hidden">
+            Increase slightly
+          </span>
+        </button>
+        <button
+          onClick={() =>
+            setCount(count + 10)
+          }
+        >
+          <ChevronsUp />
+          <span className="visually-hidden">
+            Increase a lot
+          </span>
+        </button>
+        <button
+          onClick={() =>
+            setCount(initialVal)
+          }
+        >
+          <RotateCcw />
+          <span className="visually-hidden">
+            Reset
+          </span>
+        </button>
+        <button
+          onClick={() => {
+            const nextCount = clamp(
+              Math.ceil(
+                Math.random() * 100
+              ),
+              1,
+              100
+            );
+            setCount(nextCount);
+          }}
+        >
+          <Hash />
+          <span className="visually-hidden">
+            Set to random value
+          </span>
+        </button>
+        <button
+          onClick={() =>
+            setCount(count - 10)
+          }
+        >
+          <ChevronsDown />
+          <span className="visually-hidden">
+            Decrease a lot
+          </span>
+        </button>
+        <button
+          onClick={() =>
+            setCount(count - 1)
+          }
+        >
+          <ChevronDown />
+          <span className="visually-hidden">
+            Decrease slightly
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Counter;
+```
