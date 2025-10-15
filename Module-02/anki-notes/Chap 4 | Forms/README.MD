@@ -163,5 +163,3 @@ const [username, setUsername] = React.useState('');
 With this change, our input is being controlled by React state from the 
 very first render, since we're always passing a defined value. Even 
 though empty strings are considered falsy, they still “count” when it comes to controlling React inputs.
-
-
