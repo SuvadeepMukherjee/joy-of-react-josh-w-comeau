@@ -4,7 +4,7 @@
 | --------------------------- | ----- | ---------- | --------- | -------- |
 | Another Toll in the Toolbox | ✅     | ✅          | ✅         | ✅        |
 | The useId Hook              | ✅     | ✅          | ✅         | ✅        |
-| Rules of Hooks              |       |            |           |          |
+| Rules of Hooks              | ✅     | ✅          | ✅         | ✅        |
 | Immutability Revisited      |       |            |           |          |
 | Refs                        |       |            |           |          |
 | Side Effects                |       |            |           |          |
