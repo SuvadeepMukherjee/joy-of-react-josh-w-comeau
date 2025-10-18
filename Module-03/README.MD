@@ -5,7 +5,7 @@
 | Another Toll in the Toolbox | ✅     | ✅          | ✅         | ✅        |
 | The useId Hook              | ✅     | ✅          | ✅         | ✅        |
 | Rules of Hooks              | ✅     | ✅          | ✅         | ✅        |
-| Immutability Revisited      |       |            |           |          |
+| Immutability Revisited      | ✅     | ✅          | ✅         | ✅        |
 | Refs                        |       |            |           |          |
 | Side Effects                |       |            |           |          |
 | Custom Events               |       |            |           |          |
