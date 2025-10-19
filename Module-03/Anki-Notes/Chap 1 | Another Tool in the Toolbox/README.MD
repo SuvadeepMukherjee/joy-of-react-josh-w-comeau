@@ -12,4 +12,8 @@ Anki => 01-another-tool-in-the-toolbox
 
 **Solution**:
 
-The React team introduced **hooks** because, before them, components were the only way to handle both UI and non-UI logic. This led to messy patterns like **render props** and **wrapper hell**, where everything had to be done through components. Hooks solved this by giving developers a **new tool to reuse and share business logic**  
+Earlier components were the only tool in the toolbox.Every problem in React was solved with components . non-UI usecases led to a common scenario called **Wrapper Hell** 
+
+In order to help with these issues , the React team developed a second tool for the toolbox : **Hooks**
+
+Hooks allow us to package up and re-use business logic .Like how a Button component can be sprinkled around our application ,we can create custom bundles of business logic which can be shared between components

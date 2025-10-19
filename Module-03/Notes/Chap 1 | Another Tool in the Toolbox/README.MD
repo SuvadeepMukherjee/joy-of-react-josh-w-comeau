@@ -2,7 +2,7 @@
 
 ## React Hooks
 
-Earlier components were the only tool in the toolbox. Every problem in React was solved with components.We needed components for all kinds of things including:
+Earlier components were the only tool in the toolbox. Every problem in React was solved with components.We used components for all kinds of things including:
 
 - Pulling data from context
 
