@@ -6,7 +6,7 @@ So, typically as web developers, we build user interfaces out of a standard set 
 
 But the web also comes with a totally different way to draw UI: *HTML Canvas*.
 
-If you're not familiar, HTML Canvas offers a “Microsoft Paint” style ability to create graphics by drawing shapes.
+HTML Canvas offers a “Microsoft Paint” style ability to create graphics by drawing shapes.
 
 In order to work with HTML Canvas, we start by rendering a `<canvas>` tag, and then running a bunch of commands on it using JavaScript. It might look like this:
 
@@ -42,7 +42,7 @@ React provides an escape hatch for exactly this sort of situation: The `ref` att
 
 Whenever React renders this element, it will invoke the `ref` function and provide the underlying DOM node.
 
-In the example at hand, I draw a Pokéball using a set of canvas commands. If I rewrite my `draw` function to take the canvas reference as an argument, I can call the function like so:
+ If we rewrite our `draw` function to take the canvas reference as an argument, I can call the function like so:
 
 ```js
 <canvas
