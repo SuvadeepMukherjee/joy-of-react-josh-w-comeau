@@ -8,7 +8,7 @@ Anki ➡️03-rules-of-hooks
 
 We have rules for Hooks for the following reasons 
 
-- hooks are plain old JS functions
+- Hooks are plain old JS functions
 - But , when we call these functions , they "hook into" React internals . And we can catch React off-guard. It expects these hook functions to be used in very specific ways,
 
 **Q2**:What are the 2 Rules of Hooks ?

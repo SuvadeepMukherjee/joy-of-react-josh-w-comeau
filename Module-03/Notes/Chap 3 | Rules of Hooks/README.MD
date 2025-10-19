@@ -10,7 +10,7 @@
 There are 2 rules of React 
 
 - Hooks have to be called within the scope of a React application. We can't call them outside of our React components.(The only exception is that we can call hooks within “custom hooks”)
-- We have to call our hooks at the **top level of the component.**("Top level" = unconditional + consistent order , not "top of the file" )
+- We have to call our hooks at the **top level of the component.**("Top level" = unconditional + consistent order , not "top of the file", we are not allowed to use the hook conditionally .We're never supposed to put a hook *inside an if condition* , or a *switch statement* or a *for loop* or even inside a *callback*   )
 
 ---
 
@@ -20,6 +20,8 @@ The 2 Rules of Hooks are as follows
 - We have to call our hooks at the **top level of the component.**("Top level" = unconditional + consistent order , not "top of the file" )
 
 **Q**: Why do we have to call hooks at the **top level of the component** ? 
+
+Note ➡️ We will dive deeper into this topic later
 
 **Solution**:
 
