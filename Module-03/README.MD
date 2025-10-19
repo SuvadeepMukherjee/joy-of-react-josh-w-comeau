@@ -3,7 +3,7 @@
 | Topic                       | Notes | Anki Notes | Exercises | Practise |
 | --------------------------- | ----- | ---------- | --------- | -------- |
 | Another Toll in the Toolbox | ✅     | ✅          | ✅         | ✅        |
-| The useId Hook              |       |            |           |          |
+| The useId Hook              | ✅     | ✅          | ✅         | ✅        |
 | Rules of Hooks              |       |            |           |          |
 | Immutability Revisited      |       |            |           |          |
 | Refs                        |       |            |           |          |
