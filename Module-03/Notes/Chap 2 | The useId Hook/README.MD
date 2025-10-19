@@ -15,3 +15,7 @@ function LoginForm() {
 - Each instance of this component will receive a different value. For example, if we render 2 instances, we'll notice that the `id` variable is equal to `:r0:` in the first one and `:r1:` in the second.
 - **React hooks “hook into” the component instance.** And so this ID lives on the instance, and can be plucked out during render.
 - This means that the value **persists across renders.** `id` will always be equal to `:r0:`, in that first instance, on every single render.
+
+Note ➡️
+
+The `useId` hook produces the same value across server and client renders .This is a very special property and something that would be very difficult to reproduce without a special React-provided solution
