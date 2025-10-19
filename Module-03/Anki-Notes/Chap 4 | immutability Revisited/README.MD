@@ -1,6 +1,6 @@
 # Chap 4|Immutability Revisited
 
-**Q1**:In React, when we update state like `setUser({ name: 'Ava' })`, how does it affect memory, and what happens to the `items` state variable if it wasn’t changed?
+**Q1**:In React, when we update state like `setUser({ name: 'Ava' })`, how does it affect memory, and what happens to an  `items` state variable if it wasn’t changed(no setItems)?
 
 **Solution**:
 
