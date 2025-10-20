@@ -8,7 +8,7 @@
 | Immutability Revisited      | ✅     | ✅          | ✅         | ✅        |
 | Refs                        | ✅     | ✅          | ✅         | ✅        |
 | Side Effects                |       |            |           |          |
-| Custom Events               |       |            |           |          |
+| Custom Hooks                |       |            |           |          |
 | Data Fetching               |       |            |           |          |
 | Memoization                 |       |            |           |          |
 | More to discover            |       |            |           |          |

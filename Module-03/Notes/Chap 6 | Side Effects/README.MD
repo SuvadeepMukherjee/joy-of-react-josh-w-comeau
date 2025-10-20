@@ -109,3 +109,226 @@ React.useEffect(() => {
 ```
 
 This means that the effect will re-run whenever we call `setCount`, keeping it in sync as the state changes.
+
+## Running on Mount
+
+Lets explore how we might build an “auto-focusing” text input, one that captures focus when the component mounts.
+
+Suppose we have the following code:
+
+```jsx
+function App() {
+  const [
+    searchTerm,
+    setSearchTerm,
+  ] = React.useState('');
+
+  return (
+    <main>
+      <form>
+        {/* I want to focus this input on mount: */}
+        <input
+          value={searchTerm}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+        />
+        <button>Search</button>
+      </form>
+    </main>
+  );
+}
+```
+
+We can capture a *reference* to that input with the `useRef` hook
+
+```jsx
+function App() {
+  const [
+    searchTerm,
+    setSearchTerm,
+  ] = React.useState('');
+
+  const inputRef = React.useRef();
+
+  
+}
+```
+
+Input DOM nodes have a `.focus()` method we can call to focus it, but how do I do it on mount?
+
+We can do it right in the render:
+
+```jsx
+function App() {
+  const [
+    searchTerm,
+    setSearchTerm,
+  ] = React.useState('');
+
+  const inputRef = React.useRef();
+  inputRef.current.focus();
+
+  // ✂️
+}
+```
+
+Unfortunately , this leads to an error
+
+![running-on-mount-error](../../assets/running-on-mount-error.png)
+
+The trouble is that when we first create the `inputRef`, it's empty (`{ current: undefined }`). It only captures the input DOM node *after* the first render.
+
+The solution is to use the `useEffect` hook:
+
+```jsx
+function App() {
+  const [
+    searchTerm,
+    setSearchTerm,
+  ] = React.useState('');
+
+  const inputRef = React.useRef();
+
+  React.useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  // ✂️
+}
+```
+
+Critically, we're passing an *empty dependency array*. This is how we tell React, “this effect doesn't depend on any other values”.  And if it doesn't depend on any values, it'll never re-run!
+
+Effects always run after the first render, and then again whenever the  dependencies change. This structure ensures it'll only run after the  first render.
+
+## The "autofocus" attribute 
+
+HTML form inputs have an `autofocus` property that can be used to automatically focus the element on page load:
+
+```html
+<input autofocus type="text" />
+```
+
+Given that there's a built-in way to auto-focus an input, why are we going through all the trouble with `useRef` and `useEffect`??
+
+**Unfortunately, it isn't safe to use the `autofocus` attribute in React.**
+
+The `autofocus` attribute only works reliably if the element is present when the page  first loads. It won't work if the element is dynamically injected into  the page afterwards.
+
+And in React, **pretty much every element is dynamically injected!** The only exception is if you use server-side rendering, and even then,  only for the very first page the user visits on your site.
+
+And so, the solution shown above, capturing an input with a ref and triggering `.focus()` in an effect, is the best way to solve this problem in React.
+
+## Subscriptions
+
+Let's suppose we want to track the user's cursor position. Whenever they move their mouse, we'll update some state.
+
+We can add `onMouseMove` event handlers to specific DOM nodes, like this:
+
+```html
+<div
+  onMouseMove={event => {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }}
+>
+```
+
+This will only work while the user is hovering over this particular `<div>`, though… What if we want to track their cursor position no matter where the mouse is within the viewport?
+
+In order to listen for global events, we can use `window.addEventListener`. 
+
+Specifically, we'll want to listen for `mousemove` events. We can get the cursor position using `event.clientX` and `event.clientY`.
+
+To listen for global mouse-move events, we need to use `window.addEventListener`. We can register it in an effect hook, like this:
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+});
+```
+
+At first glance, this *seems* to work, **but there are two problems with this approach.**
+
+First, we aren't ever cleaning up our event listener. 
+
+The issue I want to talk about is that **we're adding multiple event listeners.**
+
+Because we haven't specified a dependency array, this effect will run after  every single render. That means every time the user's mouse position  changes, we call `window.addEventListener` *again*. If 100 mouse-move events fire, we'll have 100 event listeners.
+
+**`window.addEventListener` is a subscription.** We only want to subscribe once, when the component first mounts.
+
+Here's what the proper solution looks like:
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+}, []);
+```
+
+`window.addEventListener` is not part of React, it's part  of the DOM. When we call this method, we set up a long-running process  that will call our callback function whenever the `mousemove` event is detected.
+
+It's the same story with many other situations, like:
+
+- Running an interval
+- Opening a web socket connection
+- Using `ResizeObserver`
+
+With an empty dependency array, the effect only runs once, after the first render, starting a single long-running process:
+
+![empty-dependency-array](../../assets/empty-dependency-array.png)
+
+*Without* the empty dependency array, however, our effect runs after every render, starting multiple long-running processes:
+
+![non-empty-dependency-array](../../assets/non-empty-dependency-array.png)
+
+Final Code 
+
+```jsx
+import React from 'react';
+
+function MouseCoords() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    function handleMouseMove(event) {
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+    window.addEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  return (
+    <div className="wrapper">
+      <p>
+        {mousePosition.x} / {mousePosition.y}
+      </p>
+    </div>
+  );
+}
+
+export default MouseCoords;
+```
+
