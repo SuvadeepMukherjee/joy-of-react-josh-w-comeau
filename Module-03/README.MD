@@ -21,7 +21,7 @@
 | ---------------------- | ------ |
 | The useEffect Hook     | ✅      |
 | Exercises              | ✅      |
-| Effect Lint Rules      |        |
+| Effect Lint Rules      | ✅      |
 | Running on mount       |        |
 | Exercises              |        |
 | Cleanup                |        |
