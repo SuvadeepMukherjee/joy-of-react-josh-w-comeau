@@ -2,8 +2,8 @@
 
 - The Magic Of React ✅ 
 - About React 19 ✅
-- Hello React 
-  - Build Your own React 
+- Hello React ✅
+  - Build Your own React ✅
 - Understanding JSX 
   - Expression Slots 
   - Differences from HTML 

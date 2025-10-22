@@ -2,7 +2,7 @@
 
 Anki Tag ➡️ 03-hello-world
 
-**Q1**:Create a "hello world" react application with React ? 
+**Q1**:Create a React application that paints to the browser "hello world" with `React.createElement` ? 
 
 **Solution**:
 
@@ -42,6 +42,8 @@ index.html ➡️
 
 ------
 
+**Q2**:
+
 index.js ➡️
 
 ```js
@@ -73,7 +75,7 @@ index.html ➡️
 
 ```
 
-Q2:The above code snippet will produce the text "hello world", why do we need to import 2 dependencies ? 
+The above code snippet will produce the text "hello world", why do we need to import 2 dependencies (`React` and `react-dom`)? 
 
 **Solution**:
 
@@ -108,7 +110,7 @@ When we use a tool like React it works by interacting with the DOM via JavaScrip
 
 ------
 
-Q5:Create a React element that is a description of a hypothetical paragraph tag with an ID of hello containing the text 'Hello World!'
+Q5:Create a React element with React.createElement that is a description of a hypothetical paragraph tag with an ID of hello containing the text 'Hello World!'
 
 **Solution**:
 
@@ -130,7 +132,7 @@ const element = React.createElement(
 
 ------
 
-Q6:The following code snippet creates a React Element .What are React Elements ? 
+Q6:The following code snippet creates a React Element with React.createElement .What are React Elements ? 
 
 ```js
 const element = React.createElement(
@@ -191,7 +193,9 @@ React elements can also specify children . React elements form a hierarchy just 
 
 ------
 
-Index.js ➡️
+**Q9**:
+
+index.js ➡️
 
 ```js
 import React from 'react';
@@ -212,7 +216,7 @@ root.render(element);
 
 Index.html➡️
 
-Q9:This is the React code to print "hello world". Explain the following lines of code
+This is the React code to print "hello world". Explain the following lines of code
 
 ```js
 const container = document.querySelector('#root');
@@ -231,6 +235,8 @@ root.render(element);
 With react-dom's *createRoot* function we specify that this element should be the root of our application. And finally we render the application with *root.render(element)*. render function converts React elements into DOM nodes
 
 ------
+
+**Q10**:
 
 index.js ➡️
 
@@ -264,7 +270,7 @@ index.html ➡️
 </html>
 ```
 
-Q10:The following code snippets print the world "hello world" to the browser , How exactly is our code running, when we don't have a `<script src="/index.js"></script>`?
+The following code snippets print the world "hello world" to the browser , How exactly is our code running, when we don't have a `<script src="/index.js"></script>`?
 
 **Solution**:
 
@@ -310,7 +316,7 @@ The following code snippets print the world "hello world" to the browser , Our c
 
 **The `index.js` file, along with the dependencies (React, React DOM), are bundled into cryptically-named files like `2.61b71a6f1.chunk.js`, and a `<script>` tag is dynamically injected into the HTML.There's an *active process* that transforms the files we write.**
 
-Why can't we add our code ourselves, using `<script>` tags, the way we do when working with jQuery and other libraries?
+Why can't we add our code ourselves, using `<script>` tags, the way we do when working with jQuery, Vanilla JS and other libraries?
 
 **Solution**:
 
