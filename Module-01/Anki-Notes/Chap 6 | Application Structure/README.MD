@@ -6,7 +6,7 @@ Anki => 06-application-structure
 
 **Solution**:
 
-**index.js***
+**index.js** ➡️
 
 ```jsx
 import React from 'react';
@@ -27,12 +27,8 @@ Its common to do "setup" tasks in this file as well (For example , this file is 
 
 index.js is more of a setup file than an active part of the application so we dont want to render a bunch of JSX here
 
-This file generally only renders a single element
+This file generally only renders a single element: `<App/>`
 
 **App**
 
-This is the "home base" React component in our project,the component that is an ancestor to every other component.Pick a random component in a React app, and you should be able to trace its lineage to App. If we are using a routing solution like React Router ,our top-level routes are often included in this file . App should show developers how the application is structured.ITs a home base for developers to check , to get acquaninted with how things work
-
-**Modules**
-
-We generally use the ES module system to split our application into multiple files
+This is the "home base" React component in our project,the component that is an ancestor to every other component.Pick a random component in a React app, and you should be able to trace its lineage to App. If we are using a routing solution like React Router ,our top-level routes are often included in this file . App should show developers how the application is structured.Its a home base for developers to check , to get acquaninted with how things work

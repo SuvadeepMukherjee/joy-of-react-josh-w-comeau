@@ -1,6 +1,6 @@
 # Module 1 | React Fundamentals
 
-- The Magic Of React ✅ 
+- The Magic Of React  ✅
 - About React 19 ✅
 - Hello React ✅
   - Build Your own React ✅
@@ -12,12 +12,12 @@
   - Exercises ✅
   - JSX vs Templates ✅
 - Components
-  - Thinking in Components
-  - Basic Syntax
-  - Props
-  - The Children Prop
-  - Exercises
-- Application Structure 
+  - Thinking in Components ✅
+  - Basic Syntax ✅
+  - Props ✅
+  - The Children Prop ✅
+  - Exercises ✅
+- Application Structure ✅
 - Fragments
 - Iteration
   - Mapping over data

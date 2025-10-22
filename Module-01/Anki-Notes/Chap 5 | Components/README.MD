@@ -6,11 +6,12 @@ Anki ➡️ 05-components
 
 **Solution**:
 
-- React is a component based framework
 - A component is a bundle of markup, styles and logic that controls everything about a specific part of the user interface
 - In React components are the main mechanism of reuse
 
 ------
+
+
 
 **Q2**: What is the Big Component Rule ? 
 
@@ -20,6 +21,28 @@ React components need to start with a capital letter .This is how the JSX compil
 
 The convention is to use PascalCase for all React component names
 
+
+
+**Q**:How are these 2 JSX elements transpiled to JS  ? 
+
+```JSX
+const heading = <h1>Hello!</h1>
+const greeting = <FriendlyGreeting />
+```
+
+**Solution**:
+
+These are how these 2 JSX elements are transpiled to JS
+
+```jsx 
+const heading = React.createElement('h1', null, 'Hello!');
+const greeting = React.createElement(FriendlyGreeting, null);
+```
+
+**A React element is a description of a thing we want to create.** In some cases, we want to create a DOM node, like an `<h1>` or a `<p>`. In other cases, we want to create a *component instance*.
+
+The first argument that we pass to `React.createElement` is the “type” of the thing we want to create. For the first element, it's a string (`"h1"`). For the second element, it's a *function!* It's `FriendlyGreeting`, and not `"FriendlyGreeting"`.
+
 ---
 
 **Q3**:What is props ? 
@@ -27,6 +50,42 @@ The convention is to use PascalCase for all React component names
 **Solution**:
 
 Props are like arguments to a function :they allow us to pass data to our components so that the component can include customizations based on the data 
+
+
+
+Example ➡️
+
+```jsx
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+function FriendlyGreeting({ name }) {
+  return (
+    <p
+      style={{
+        fontSize: '1.25rem',
+        textAlign: 'center',
+        color: 'sienna',
+      }}
+    >
+      Greetings, {name}!
+    </p>
+  );
+}
+
+// The video was filmed using React 17, but this code
+// has been updated for React 19:
+const root = createRoot(document.querySelector('#root'));
+root.render(
+  <div>
+    <FriendlyGreeting name="Josh" />
+    <FriendlyGreeting name="Anita" />
+    <FriendlyGreeting name="Rahul" />
+  </div>
+);
+```
+
+
 
 ---
 

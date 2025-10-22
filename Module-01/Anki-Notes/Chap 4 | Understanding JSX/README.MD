@@ -2,7 +2,7 @@
 
 Anki Tag ➡️ 04-understanding-jsx
 
-**Q1**:Create a hypothetical paragraph with an id ="hello" that contains the text "hello world" using JSX
+**Q1**:Create a React application that has a hypothetical paragraph with an id ="hello" that contains the text "hello world" using JSX painted to the DOM 
 
 **Solution**:
 
@@ -52,7 +52,7 @@ const element = (
 );
 ```
 
-This is done purely for formatting purposes. It allows us to push the JSX onto the next line.
+This is done purely for formatting purposes. It allows us to push the JSX onto the next line so that its easier to read. 
 
 ------
 
@@ -93,6 +93,8 @@ const element = React.createElement(
 );
 ```
 
+For whatever reason ,HTML-like syntax is easier for our brains to process.It's nicer to read , and it's nicer to write
+
 ------
 
 **Q3**: What do you mean by the statement JSX needs to be transpiled to JS ?
@@ -102,6 +104,20 @@ const element = React.createElement(
 JS Engines dont understand JSX they only understand JS so we need to transpile our code into plain js .This is most commonly done as part of a build step using a tool called Babel .The JSX we write gets converted into *React.createElement* .By the time our code is running in the user's browser all of the JSX has been zapped out and we are left with a JS file full of nested *React.createElement* calls
 
 ------
+
+**Q5**:What is the difference between transpiling and compiling ? 
+
+**Solution**:
+
+Compiling ➡️ Process of taking human-readable code and transforming it into machine-readable code 
+
+Example ➡️ A compiler converts a high-level language like Python and converts it into machine-readable code 
+
+Transpiling ➡️ Transpiling is the process of converting a high level language into another high level language 
+
+Example ➡️ A transpiler might convert a high level language like Python into another high level language like Javascript
+
+
 
 **Q4**:Can we include jsx in a js file ? 
 
@@ -232,21 +248,23 @@ const element = _jsx(
 
 ------
 
+**Q8**:What is expression slot in JSX ? 
+
+**Solution**:
+
+- In JSX ,the content we put between open/close tags is treated as a static  string. If we try and reference a variable, it'll print the variable  name itself, rather than the value it references.
+- We can create *expression slots* with curly brackets (`{}`). Anything placed in-between curly brackets will be treated as pure JavaScript, instead of a string.
+- Because JSX turns into `React.createElement()` function calls, we'll get a JavaScript syntax error if we try and place a statement in that slot. It has to be an *expression*.
+
+
+
 **Q7**: Why will we get a Javascript Syntax error if we try and place a statement in an expression slot ? 
 
 **Solution**:
 
 - Because JSX turns into *React.createElement()* function calls , we will get a JS syntax error if we try and place a statement in that slot .It has to be an expression
 
-------
 
-**Q8**:What is a JSX expression slot ? 
-
-**Solution**:
-
-- In JSX, the content we put between open/close tags is treated as a  static string. If we try and reference a variable, it'll print the  variable name itself, rather than the value it references.
-- We can create *expression slots* with curly brackets (`{}`). Anything placed in-between curly brackets will be treated as pure JavaScript, instead of a string.
-- Because JSX turns into `React.createElement()` function calls, we'll get a JavaScript syntax error if we try and place a statement in that slot. It has to be an *expression*.
 
 ------
 
@@ -269,6 +287,25 @@ We specifically need to use the multi-line comment syntax (`/* */`) instead of t
 ![Code snippet with a double-slash comment, not working](https://courses.joshwcomeau.com/react-mats/jsx-broken-comment.png)
 
 ------
+
+**Q**:How can we use dynamic attribute values in JSX ? 
+
+**Solution**:
+
+- The squiggly brackets ({}) allow us to create an expression slot 
+- We can any valid  JS expressions within this squiggly brackets 
+
+```jsx
+const uniqueId = 'content-wrapper';
+
+const element = (
+  <main id={uniqueId}>
+    Hello World
+  </main>
+);
+```
+
+
 
 **Q10**:
 
@@ -365,6 +402,13 @@ This same pattern has been implemented in JSX ; these two elements are equivalen
 ```
 
 However its not recommended doing this and preferred to spell it out and write `required={true}`
+
+```
+//Recommended 🚀
+<input required ={true}/>
+```
+
+
 
 Why ? 
 

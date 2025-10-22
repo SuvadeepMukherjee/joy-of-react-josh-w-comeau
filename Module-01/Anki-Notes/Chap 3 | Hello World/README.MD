@@ -93,7 +93,7 @@ Q3:What is DOM (Document Object Model) ?
 
 **Solution**:
 
-- The DOM is the living , breathing structure that makes up a live website the browser turns the static HTML into the DOM
+- The DOM is the living , breathing structure that makes up a live website / web application the browser turns the static HTML into the DOM
 - Here is another way to look at it 
   - When we right-click and "View Source" we view the HTML , a static document that describes what will be constructed
   - When we right-click and inspect element we open the Elements pane and we are interacting with the DOM.We can change attributes and watch the UI update in response
@@ -110,7 +110,7 @@ When we use a tool like React it works by interacting with the DOM via JavaScrip
 
 ------
 
-Q5:Create a React element with React.createElement that is a description of a hypothetical paragraph tag with an ID of hello containing the text 'Hello World!'
+Q5:Create a React element with `React.createElement` that is a description of a hypothetical paragraph tag with an id of hello containing the text 'Hello World!'
 
 **Solution**:
 
@@ -215,6 +215,18 @@ root.render(element);
 ```
 
 Index.html➡️
+
+```html
+<html>
+<body>
+
+  <div id="root"></div>
+
+</body>
+</html>
+```
+
+
 
 This is the React code to print "hello world". Explain the following lines of code
 
@@ -322,7 +334,7 @@ Why can't we add our code ourselves, using `<script>` tags, the way we do when w
 
 There are a few reasons for this:
 
- ➡️ As we'll learn, JSX needs to be compiled into JS
+ ➡️  JSX needs to be compiled into JS
 
 ➡️ It enables quality-of-life improvements, like being able to use bleeding-edge JS features
 
