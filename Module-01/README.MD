@@ -4,13 +4,13 @@
 - About React 19 ✅
 - Hello React ✅
   - Build Your own React ✅
-- Understanding JSX 
-  - Expression Slots 
-  - Differences from HTML 
-  - Fix the converter 
-  - The Whitespace Gotcha 
-  - Exercises 
-  - JSX vs Templates 
+- Understanding JSX ✅
+  - Expression Slots ✅
+  - Differences from HTML  ✅
+  - Fix the converter ✅
+  - The Whitespace Gotcha ✅
+  - Exercises ✅
+  - JSX vs Templates ✅
 - Components
   - Thinking in Components
   - Basic Syntax

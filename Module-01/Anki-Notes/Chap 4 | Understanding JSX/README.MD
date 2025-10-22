@@ -1,12 +1,8 @@
-```
-
-```
-
 # Chap 4 | Understanding JSX
 
 Anki Tag ➡️ 04-understanding-jsx
 
-**Q1**:Create a hypothetical paragraph with an id ="hello" that contains the text "hello world" using jsx
+**Q1**:Create a hypothetical paragraph with an id ="hello" that contains the text "hello world" using JSX
 
 **Solution**:
 
@@ -274,6 +270,8 @@ We specifically need to use the multi-line comment syntax (`/* */`) instead of t
 
 ------
 
+**Q10**:
+
 ```js
 const userEmail = 'sumeet@thegreat.com';
 
@@ -287,7 +285,7 @@ const element = (
 );
 ```
 
-**Q10**:Does the code actually get evaluated during transpiling ? 
+Does the code actually get evaluated during transpiling ? 
 
 **Solution**:
 
