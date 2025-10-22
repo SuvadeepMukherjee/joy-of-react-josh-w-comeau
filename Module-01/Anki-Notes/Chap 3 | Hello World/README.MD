@@ -130,7 +130,15 @@ const element = React.createElement(
 
 ------
 
-Q6:React elements are plain old Javascript objects , is the statement true or false?
+Q6:The following code snippet creates a React Element .What are React Elements ? 
+
+```js
+const element = React.createElement(
+  'p',
+  { id: 'hello' },
+  'Hello World!'
+);
+```
 
 **Solution**:
 

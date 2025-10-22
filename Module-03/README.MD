@@ -22,10 +22,10 @@
 | The useEffect Hook     | ✅      |
 | Exercises              | ✅      |
 | Effect Lint Rules      | ✅      |
-| Running on mount       |        |
-| Exercises              |        |
-| Cleanup                |        |
-| Cleanup Exercises      |        |
+| Running on mount       | ✅      |
+| Exercises              | ✅      |
+| Cleanup                | ✅      |
+| Cleanup Exercises      | ✅      |
 | Stale Values           |        |
 | State- Setter Callback |        |
 | Exercises              |        |

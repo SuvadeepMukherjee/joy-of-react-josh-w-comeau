@@ -348,3 +348,299 @@ function MouseCoords() {
 export default MouseCoords;
 ```
 
+**Q8**:The `App` component toggles mouse tracking by conditionally rendering `<MouseTracker />`. When `isTrackingMouse` is true, the component mounts (creating a new instance). When it’s false, the component unmounts (destroying that instance and its DOM nodes).
+
+It’s natural to assume any event listeners inside `<MouseTracker />` will also stop when it unmounts — but that doesn’t happen automatically.
+
+```jsx
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    // Effect logic:
+    function handleMouseMove(event) {
+      console.log('move');
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+window.addEventListener('mousemove', handleMouseMove);
+
+   
+  }, []);
+
+  return (
+    <p>
+      {mousePosition.x} / {mousePosition.y}
+    </p>
+  );
+}
+
+export default MouseTracker;
+```
+
+Why ? 
+
+**Solution**:
+
+When the component unmounts, the event listener remains, tracking the cursor position and calling `setMousePosition` on a component instance that shouldn't exist anymore!
+
+Because we're referencing a part of the component instance (by calling `setMousePosition`), the JavaScript garbage collector isn't able to clean up this instance!  That means that every time we mount this component, we create an  instance that will never be erased.
+
+**Q9**:The `App` component toggles mouse tracking by conditionally rendering `<MouseTracker />`. When `isTrackingMouse` is true, the component mounts (creating a new instance). When it’s false, the component unmounts (destroying that instance and its DOM nodes).
+
+```JSX
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    // Effect logic:
+    function handleMouseMove(event) {
+      console.log('move');
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+window.addEventListener('mousemove', handleMouseMove);
+
+   
+  }, []);
+
+  return (
+    <p>
+      {mousePosition.x} / {mousePosition.y}
+    </p>
+  );
+}
+
+export default MouseTracker;
+```
+
+We are not removing the event listener , why is this a problem ?
+
+**Solution**:
+
+When the component unmounts, the event listener remains, tracking the cursor position and calling `setMousePosition` on a component instance that shouldn't exist anymore!
+
+This is a problem for 2 reasons:
+
+1. Every time the component is re-mounted, another event listener will be added, without the previous one being removed.
+2. Because we're referencing a part of the component instance (by calling `setMousePosition`), the JavaScript garbage collector isn't able to clean up this instance!  That means that every time we mount this component, we create an  instance that will never be erased.
+
+This is known as a *memory leak.* The longer the person spends  using our application, the more memory it will consume. The memory will  be released if the user refreshes the page, but often people will leave  the same tab running for weeks or months on end!
+
+**Q10**:The `App` component toggles mouse tracking by conditionally rendering `<MouseTracker />`. When `isTrackingMouse` is true, the component mounts (creating a new instance). When it’s false, the component unmounts (destroying that instance and its DOM nodes).
+
+```JSX
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    // Effect logic:
+    function handleMouseMove(event) {
+      console.log('move');
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+window.addEventListener('mousemove', handleMouseMove);
+
+   
+  }, []);
+
+  return (
+    <p>
+      {mousePosition.x} / {mousePosition.y}
+    </p>
+  );
+}
+
+export default MouseTracker;
+```
+
+We are not removing the event listener , which causes event leaks .Fix the code according to the pattern for any subscription / long-running process
+
+**Solution**:
+
+We use the `useEffect` Hook to do the cleanup 
+
+Here's what it looks like:
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+
+  return () => {
+    window.removeEventListener('mousemove', handleMouseMove);
+  }
+}, []);
+```
+
+**Q11**:Why can't react automatically remove the event listener ? 
+
+```jsx
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    // Effect logic:
+    function handleMouseMove(event) {
+      console.log('move');
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+window.addEventListener('mousemove', handleMouseMove);
+
+   
+  }, []);
+
+  return (
+    <p>
+      {mousePosition.x} / {mousePosition.y}
+    </p>
+  );
+}
+
+export default MouseTracker;
+```
+
+**Solution**:
+
+React actually has no idea what goes on inside our effect function
+
+```jsx
+// What React sees:
+React.useEffect(() => {
+  ????
+}, []);
+```
+
+React sees that we've given it a function, and we've specified when  it should be called (with the dependency array), but React can't “see  inside” this function! It has no idea that we've started an event  listener, since the event-listener stuff is part of the DOM.
+
+Similarly, the JavaScript engine that runs our event listener has no idea that it  was created within a component instance, and that it should be  contingent on that instance existing.
+
+Essentially, we have two independent systems here, and it's up to us to synchronize them.
+
+Fortunately, the `useEffect` comes with a tool to make this possible: **cleanup functions.**
+
+Here's what it looks like:
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+
+  return () => {
+    window.removeEventListener('mousemove', handleMouseMove);
+  }
+}, []);
+```
+
+Within our effect function, we return a function that contains the  cleanup work to be done. React will hang onto this function, and invoke  it at the appropriate time: right before the component unmounts.
+
+This is typically the pattern for any subscription / long-running process. We *subscribe* in the effect function, and *unsubscribe* in the cleanup function. React will call the cleanup function right  before the component unmounts, stopping the process and ensuring we  don't wind up with a memory leak.
+
+**Q12**:Why is the cleanup function set up this way ? 
+
+```jsx
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    // Effect logic:
+    function handleMouseMove(event) {
+      console.log('move');
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+window.addEventListener('mousemove', handleMouseMove);
+
+    // Cleanup function:
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <p>
+      {mousePosition.x} / {mousePosition.y}
+    </p>
+  );
+}
+
+export default MouseTracker;
+```
+
+**Solution**:
+
+This is really more of an implementation detail.
+
+That said, there *is* a good reason for it to be set up this way
+
+The reason being our cleanup function needs to access to stuff created in the effect function.
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+
+  return () => {
+    // We have access to `handleMouseMove` because it's
+    // defined in the parent scope!
+    window.removeEventListener('mousemove', handleMouseMove);
+  };
+}, []);
+```
+
+This is the reason the React team went with this approachThis is the reason the React team went with this approach

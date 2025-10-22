@@ -332,3 +332,309 @@ function MouseCoords() {
 export default MouseCoords;
 ```
 
+## Cleanup
+
+We've been learning how to start long-running processes on mount with the `useEffect` hook, but our solutions so far have been incomplete!
+
+To show the problem, we've updated our mouse-tracking example from the Running On Mount” chapter so that it's conditionally rendered:
+
+```jsx
+function App() {
+  const [isTrackingMouse, setIsTrackingMouse] = React.useState(true);
+
+  function toggleMouseTracking() {
+    setIsTrackingMouse(!isTrackingMouse);
+  }
+
+  return (
+    <div className="wrapper">
+      <button onClick={toggleMouseTracking}>
+        Toggle Mouse Tracking
+      </button>
+      {isTrackingMouse && <MouseTracker />}
+    </div>
+  );
+}
+```
+
+When `isTrackingMouse` is a truthy value , we mount the component.This creates a component instance , a place for us to store data related to the component
+
+When `isTrackingMouse` is false , however , we unmount the component , destroying the instance and removing all associated DOM nodes
+
+t's intuitive to think, therefore, that any lingering effects will also  be interrupted if the component unmounts, but unfortunately, it doesn't  work this way. 
+
+Our `MouseTracker` component sets up the following effect:
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+}, []);
+```
+
+When the component unmounts, the event listener remains, tracking the cursor position and calling `setMousePosition` on a component instance that shouldn't exist anymore!
+
+This is a problem for 2 reasons:
+
+1. Every time the component is re-mounted, another event listener will be added, without the previous one being removed.
+2. Because we're referencing a part of the component instance (by calling `setMousePosition`), the JavaScript garbage collector isn't able to clean up this instance!  That means that every time we mount this component, we create an  instance that will never be erased.
+
+This is known as a *memory leak.* The longer the person spends  using our application, the more memory it will consume. The memory will  be released if the user refreshes the page, but often people will leave  the same tab running for weeks or months on end!
+
+**Why isn't the event listener removed automatically?** Here's the thing: React actually has no idea what goes on inside our effect function:
+
+```jsx
+// What React sees:
+React.useEffect(() => {
+  ????
+}, []);
+```
+
+React sees that we've given it a function, and we've specified when  it should be called (with the dependency array), but React can't “see  inside” this function! It has no idea that we've started an event  listener, since the event-listener stuff is part of the DOM.
+
+Similarly, the JavaScript engine that runs our event listener has no idea that it  was created within a component instance, and that it should be  contingent on that instance existing.
+
+Essentially, we have two independent systems here, and it's up to us to synchronize them.
+
+Fortunately, the `useEffect` comes with a tool to make this possible: **cleanup functions.**
+
+Here's what it looks like:
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+
+  return () => {
+    window.removeEventListener('mousemove', handleMouseMove);
+  }
+}, []);
+```
+
+
+
+Within our effect function, we return a function that contains the  cleanup work to be done. React will hang onto this function, and invoke  it at the appropriate time: right before the component unmounts.
+
+This is typically the pattern for any subscription / long-running process. We *subscribe* in the effect function, and *unsubscribe* in the cleanup function. React will call the cleanup function right  before the component unmounts, stopping the process and ensuring we  don't wind up with a memory leak.
+
+Code with the cleanup function added : 
+
+```jsx
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  React.useEffect(() => {
+    // Effect logic:
+    function handleMouseMove(event) {
+      console.log('move');
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+window.addEventListener('mousemove', handleMouseMove);
+
+    // Cleanup function:
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <p>
+      {mousePosition.x} / {mousePosition.y}
+    </p>
+  );
+}
+
+export default MouseTracker;
+```
+
+## Why is the cleanup function set up this way ? 
+
+This is really more of an implementation detail.
+
+That said, there *is* a good reason for it to be set up this way
+
+The reason being our cleanup function needs to access to stuff created in the effect function.
+
+```jsx
+React.useEffect(() => {
+  function handleMouseMove(event) {
+    setMousePosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  }
+
+  window.addEventListener('mousemove', handleMouseMove);
+
+  return () => {
+    // We have access to `handleMouseMove` because it's
+    // defined in the parent scope!
+    window.removeEventListener('mousemove', handleMouseMove);
+  };
+}, []);
+```
+
+This is the reason the React team went with this approach 
+
+## Cleanup With Dependencies
+
+What if our effect has dependencies ? How do they interact with this cleanup function ? 
+
+In this example everything happens within a component 
+
+```jsx
+import React from 'react';
+
+function MouseTracker() {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+  const [isEnabled, setIsEnabled] = React.useState(true);
+
+  React.useEffect(() => {
+    function handleMouseMove(event) {
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  function toggleMouseTracking() {
+    setIsEnabled(!isEnabled);
+  }
+
+  return (
+    <>
+      <button onClick={toggleMouseTracking}>
+        Toggle Mouse Tracking
+      </button>
+      <p>
+        {mousePosition.x} / {mousePosition.y}
+      </p>
+    </>
+  );
+}
+
+export default MouseTracker;
+```
+
+Essentially we want to register the event listener when `isEnabled` is `true` , and unregister it when the user clicks the button , flipping `isEnabled` to `false`
+
+We could do something like this ➡️
+
+```jsx
+if (isEnabled) {
+  React.useEffect(() => {
+    function handleMouseMove(event) {
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+}
+```
+
+Essentially we are conditionally calling the `useEffect` hook . Unfortunately, as we've learned, this violates the “Rules of Hooks”. We're not allowed to conditionally call *any* hooks.
+
+What if we move the `if` condition within the hook , like this ? 
+
+```jsx
+React.useEffect(() => {
+  if (isEnabled) {
+    function handleMouseMove(event) {
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }
+}, []);
+```
+
+If we run this code, we get a *different* lint warning: we're missing a dependency! Like we saw in the Effect Lint Rules lesson, we need to add all state variables to the dependency array.
+
+When we add `isEnabled` to the dependency array, we solve all of the lint warnings... and we also solve the problem!
+
+```jsx
+// ✅ This code does exactly what we want!
+React.useEffect(() => {
+  if (isEnabled) {
+    function handleMouseMove(event) {
+      setMousePosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }
+}, [isEnabled]);
+```
+
+How exactly does this work , though ?
+
+-  When the component mounts, we run the effect, registering the event  listener, and handing React the cleanup function, like a gift waiting to be opened
+- As the user moves the mouse around, the `mousePosition` state will be updated rapid-fire, but the effect doesn't re-run, since `mousePosition` isn't a dependency.
+- If the user clicks the button, `isEnabled` flips to false. Since `isEnabled` is a dependency, it means the effect will re-run.
+- **First, though, React invokes the cleanup function!**
+- The event listener is removed, and because `isEnabled` is `false`, the effect is a no-op.
+- This process repeats every time the user clicks the button.
+
+The key trick here is that effects aren't meant to "stack". Before React can re-run the effect, it'll invoke the cached cleanup function, to  make sure we're starting from a "clean slate".
+
+The order of operations :
+
+![pic-1](../../assets/pic-1.png)
+
+A view of snapshots and cleanup: 
+
+![pic-2](../../assets/pic-2.png)
+
+Cleanup functions aren't always provided:
+
+![pic-3](../../assets/pic-3.png)

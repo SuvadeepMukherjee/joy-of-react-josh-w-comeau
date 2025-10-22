@@ -1,16 +1,16 @@
 # Module 1 | React Fundamentals
 
-- The Magic Of React ✅
+- The Magic Of React ✅ 
 - About React 19 ✅
-- Hello React ✅
-  - Build Your own React ✅
-- Understanding JSX ✅
-  - Expression Slots ✅
-  - Differences from HTML ✅
-  - Fix the converter ✅
-  - The Whitespace Gotcha ✅
-  - Exercises ✅
-  - JSX vs Templates ✅
+- Hello React 
+  - Build Your own React 
+- Understanding JSX 
+  - Expression Slots 
+  - Differences from HTML 
+  - Fix the converter 
+  - The Whitespace Gotcha 
+  - Exercises 
+  - JSX vs Templates 
 - Components
   - Thinking in Components
   - Basic Syntax
