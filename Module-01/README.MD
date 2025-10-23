@@ -18,11 +18,11 @@
   - The Children Prop ✅
   - Exercises ✅
 - Application Structure ✅
-- Fragments
-- Iteration
-  - Mapping over data
-  - Keys
-  - Exercises
+- Fragments ✅
+- Iteration ✅
+  - Mapping over data ✅
+  - Keys ✅
+  - Exercises ✅
 - Conditional Rendering
   - With an if statement
   - With &&
@@ -34,3 +34,4 @@
 - Styling in React (Fully Completed)
   - CSS Modules
   - Exercises
+  - 
