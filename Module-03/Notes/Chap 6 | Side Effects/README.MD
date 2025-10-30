@@ -5,7 +5,9 @@
 As we build applications, we often need to synchronize with external systems. This can include things like:
 
 - Making network requests
+
 - Managing timeouts / intervals
+
 - Reading/writing from localStorage
 
 - Listening for global events
@@ -20,7 +22,7 @@ React calls all of these things “side effects”.
 - **Why not do the work directly in the component?** Well, we *can*, but `useEffect` gives us additional tools.
 - We can specify *dependencies* so that the effect only runs sometimes, when a particular value has changed. For example:
 
-```js  
+```js
 React.useEffect(() => {
   // Effect logic
   document.title = `(${count}) — Counter 2.0`;
@@ -151,7 +153,7 @@ function App() {
 
   const inputRef = React.useRef();
 
-  
+
 }
 ```
 
@@ -202,7 +204,7 @@ Critically, we're passing an *empty dependency array*. This is how we tell React
 
 Effects always run after the first render, and then again whenever the  dependencies change. This structure ensures it'll only run after the  first render.
 
-## The "autofocus" attribute 
+## The "autofocus" attribute
 
 HTML form inputs have an `autofocus` property that can be used to automatically focus the element on page load:
 
@@ -423,8 +425,6 @@ React.useEffect(() => {
 }, []);
 ```
 
-
-
 Within our effect function, we return a function that contains the  cleanup work to be done. React will hang onto this function, and invoke  it at the appropriate time: right before the component unmounts.
 
 This is typically the pattern for any subscription / long-running process. We *subscribe* in the effect function, and *unsubscribe* in the cleanup function. React will call the cleanup function right  before the component unmounts, stopping the process and ensuring we  don't wind up with a memory leak.
@@ -467,7 +467,7 @@ window.addEventListener('mousemove', handleMouseMove);
 export default MouseTracker;
 ```
 
-## Why is the cleanup function set up this way ? 
+## Why is the cleanup function set up this way ?
 
 This is really more of an implementation detail.
 
@@ -618,7 +618,7 @@ React.useEffect(() => {
 
 How exactly does this work , though ?
 
--  When the component mounts, we run the effect, registering the event  listener, and handing React the cleanup function, like a gift waiting to be opened
+- When the component mounts, we run the effect, registering the event  listener, and handing React the cleanup function, like a gift waiting to be opened
 - As the user moves the mouse around, the `mousePosition` state will be updated rapid-fire, but the effect doesn't re-run, since `mousePosition` isn't a dependency.
 - If the user clicks the button, `isEnabled` flips to false. Since `isEnabled` is a dependency, it means the effect will re-run.
 - **First, though, React invokes the cleanup function!**
@@ -638,3 +638,142 @@ A view of snapshots and cleanup:
 Cleanup functions aren't always provided:
 
 ![pic-3](../../assets/pic-3.png)
+
+## Stale Values
+
+Lets try to built a simple media player where pressing the spacebar shortcut pauses /plays the music
+
+```jsx
+React.useEffect(() => {
+  function handleKeyDown(event) {
+    if (event.code === 'Space') {
+      // TODO: Play or pause
+    }
+  }
+
+  window.addEventListener('keydown', handleKeyDown);
+
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, []);
+```
+
+We start our subscription, listening for `keydown` events,
+ and checking if they've pressed the spacebar key. Our cleanup function 
+unsubscribes from this event. Because we've specified an empty 
+dependency array, this event listener runs for the entire component 
+lifetime.
+
+How do we play or pause the song? Well, we have this chunk of code :
+
+```jsx
+<button
+  onClick={() => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+
+    setIsPlaying(!isPlaying);
+  }}
+>
+```
+
+The thing that makes this one a bit tricky is that we actually have *two* bits of state we need to manage:
+
+- The React state, under the `isPlaying` variable.
+
+- The internal DOM audio state, which controls whether or not the song is actually playing.
+
+One option is to create a function that manages both:
+
+```jsx
+function togglePlaying() {
+  if (isPlaying) {
+    audioRef.current.pause();
+  } else {
+    audioRef.current.play();
+  }
+
+  setIsPlaying(!isPlaying);
+}
+```
+
+There are two issues with this approach, however:
+
+- We'd have to add this `togglePlaying` function to our effect's dependency array, which can introduce performance problems. 
+
+- It's too easy to forget to use this function!
+
+To expand on that second point, We can easily imagine another developer or myself not realizing that there are actually *two* relevant pieces of state.
+
+If we're not *super* careful, we can wind up in scenarios where the two state variables diverge. Maybe `isPlaying` is set to true, but the audio isn't playing! These issues are very tough to debug
+
+**So, here's one solution:** We're going to add a *second* `useEffect` hook. This hook has 1 job: to make sure that the audio DOM node's internal state is kept in sync with the `isPlaying` state variable:
+
+```jsx
+React.useEffect(() => {
+  if (isPlaying) {
+    audioRef.current.play();
+  } else {
+    audioRef.current.pause();
+  }
+}, [isPlaying])
+```
+
+We can then update our button to only toggle the state variable:
+
+```jsx
+<button
+  onClick={() => {
+    // This work is no longer necessary:
+    //
+    //   if (isPlaying) {
+    //     audioRef.current.pause();
+    //   } else {
+    //     audioRef.current.play();
+    //   }
+
+    setIsPlaying(!isPlaying);
+  }}
+>
+```
+
+And we can update the `isPlaying` state within our `keydown` callback as well:
+
+```jsx
+React.useEffect(() => {
+  function handleKeyDown(event) {
+    if (event.code === 'Space') {
+      setIsPlaying(!isPlaying);
+    }
+  }
+
+  window.addEventListener('keydown', handleKeyDown);
+
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, []);
+```
+
+Now, when we do this, we get a lint warning:
+
+![](../../assets/missing-dependency.png)
+
+The problem with our code is that our effect only runs after the 1st 
+render. It means we only have access to the very first snapshot, where `isPlaying` is permanently set to `false`.
+
+Every time the user hits the spacebar key, we call `setIsPlaying(!false)`. This means that the keyboard shortcut can *start* the song, but it can't *stop* it.
+
+There are two potential solutions to this problem.
+
+1. Adding the dependency
+
+2. Using the callback escape hatch
+
+**Adding the dependency**:
+
+We ass the `isPlaying` state to 
